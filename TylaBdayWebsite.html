@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Tyli!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffe5b4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 50px; /* Adjust positioning slightly from the top */
+        }
+
+        h1 {
+            font-size: 4em;
+            color: #ff69b4;
+            text-shadow: 2px 2px 4px #000;
+            margin: 0;
+        }
+
+        p {
+            font-size: 1.5em;
+            color: #555;
+            margin: 15px auto 0;
+            padding: 10px 20px;
+            max-width: 600px;
+            line-height: 1.8;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px dashed #ff69b4;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Happy Birthday Tyli! 🎉</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus consectetur tortor at enim suscipit semper quis quis sem. Nulla convallis risus et auctor finibus. Cras suscipit accumsan libero, ut porttitor purus accumsan eget. Vivamus ullamcorper sed tortor molestie auctor. Vivamus eget augue eros. Curabitur vestibulum lacus eu porttitor aliquam. Sed iaculis placerat magna eget vehicula. Nulla ipsum lorem, ultricies in lorem ornare, mollis tincidunt ante.
+
+Morbi ipsum sapien, semper ornare mauris quis, volutpat sagittis ex. Nunc in dolor quis felis dictum porta id nec lorem. Cras eu molestie felis. Fusce non ultricies orci. Integer venenatis, tortor eget porta egestas, justo velit iaculis diam, in mattis augue odio eget nunc. Vivamus sollicitudin congue diam, quis facilisis enim maximus auctor. Donec elit nunc, luctus vel pharetra non</p>
+    </div>
+
+    <script>
+        const duration = 15 * 1000,
+              animationEnd = Date.now() + duration,
+              defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        const interval = setInterval(function() {
+            const timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+
+            const particleCount = 50 * (timeLeft / duration);
+
+            confetti(
+                Object.assign({}, defaults, {
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                })
+            );
+            confetti(
+                Object.assign({}, defaults, {
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                })
+            );
+        }, 250);
+    </script>
+</body>
+</html>

@@ -19,6 +19,7 @@
             padding-top: 5vh;
             overflow: hidden; /* Prevent scrollbars from appearing */
         }
+        /* Single full background for desktop */
         .gif-background {
             position: absolute;
             top: 0;
@@ -28,21 +29,29 @@
             background: url('frame_00_delay-1s.gif') no-repeat center center/cover;
             background-size: cover;
             background-attachment: fixed;
-            z-index: -1; /* Put the GIF behind the text */
-            transition: background-position 0.3s ease;
+            z-index: -1;
+        }
+        /* These will only be visible on mobile */
+        .wood-background, .gif-background-bottom {
+            display: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+            z-index: -1;
+            background-size: cover;
         }
         .container {
             background: none;
             border-radius: 15px;
             max-width: 600px;
-            width: 90%; /* Ensures the container adjusts to the screen width */
+            width: 90%;
             box-shadow: none;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
             margin-top: 10px;
-            padding: 20px; /* Added some padding for small screens */
+            padding: 20px;
         }
         h1 {
             font-size: 2.5em;
@@ -57,7 +66,7 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
             margin-bottom: 10px;
             margin-top: 5px;
-            color: #714406;
+            color: #271b0a;
         }
         button {
             padding: 6px 14px;
@@ -75,53 +84,83 @@
 
         /* Media query for mobile devices */
         @media (max-width: 768px) {
+            /* Hide the full background on mobile */
             .gif-background {
-                background-position: center 80%; /* Move the background lower on mobile devices */
+                display: none;
+            }
+            /* Show the wood background and bottom GIF instead */
+            .wood-background, .gif-background-bottom {
+                display: block;
+            }
+            .wood-background {
+                top: 0;
+                height: 40%;
+                background: url('woodTexture.jpg') no-repeat center center/cover;
+            }
+            .gif-background-bottom {
+                top: 40%;
+                bottom: 0;
+                background: url('frame_00_delay-1s.gif') no-repeat center 30%/cover;
             }
             h1 {
-                font-size: 2em; /* Make the title smaller on smaller screens */
+                font-size: 2em;
             }
             p {
-                font-size: 1em; /* Adjust paragraph text size */
+                font-size: 1em;
                 padding: 10px;
             }
             button {
-                font-size: 0.8em; /* Smaller button text */
-                padding: 8px 16px; /* Adjust button padding */
+                font-size: 0.8em;
+                padding: 8px 16px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="gif-background"></div> <!-- The container for the GIF -->
+    <!-- Single background for desktop -->
+    <div class="gif-background"></div>
+    
+    <!-- Split backgrounds for mobile only -->
+    <div class="wood-background"></div>
+    <div class="gif-background-bottom"></div>
+    
     <h1>🥃 Happy Birthday Dad! 🥃</h1>
     <div class="container">
         <p>Hope you have an absolutely amazing day! Thank you for always being such an incredible dad and someone I can always count on for help whenever I need it. You do so much for us, and I can't thank you enough for everything. Love you tonnes, Da — here's a drink on me!</p>
-        <button onclick="startGif()">Celebrate</button> <!-- Button to trigger the GIF -->
+        <button onclick="startGifs()">Celebrate</button>
     </div>
 
     <script>
-        function startGif() {
-            // Preload the next GIF
+        function startGifs() {
+            const isMobile = window.innerWidth <= 768;
+            
+            // Preload the next image
             const nextGif = new Image();
             nextGif.src = 'frame_19_delay-1s.gif?' + Math.random();
-
-            // Get the current background position style
-            const bgPosition = window.innerWidth <= 768 ? 'center 80%' : 'center center';
-
-            // Apply first GIF with the appropriate positioning
-            document.querySelector('.gif-background').style.background = "url('whiskeyPour.gif?" + Math.random() + "') no-repeat " + bgPosition + "/cover";
-            document.querySelector('.gif-background').style.backgroundSize = "cover";
-            document.querySelector('.gif-background').style.backgroundAttachment = "fixed";
-
-            // Apply second GIF with the same positioning
-            nextGif.onload = function() {
+            
+            if (isMobile) {
+                // Mobile: Update only the bottom GIF (top is static wood JPEG)
+                document.querySelector('.gif-background-bottom').style.background = "url('whiskeyPour.gif?" + Math.random() + "') no-repeat center 30%/cover";
+                document.querySelector('.gif-background-bottom').style.backgroundSize = "cover";
+                
+                // After animation completes
                 setTimeout(function() {
-                    document.querySelector('.gif-background').style.background = "url('frame_19_delay-1s.gif?" + Math.random() + "') no-repeat " + bgPosition + "/cover";
+                    document.querySelector('.gif-background-bottom').style.background = "url('frame_19_delay-1s.gif?" + Math.random() + "') no-repeat center 30%/cover";
+                    document.querySelector('.gif-background-bottom').style.backgroundSize = "cover";
+                }, 2800);
+            } else {
+                // Desktop: Update single full GIF
+                document.querySelector('.gif-background').style.background = "url('whiskeyPour.gif?" + Math.random() + "') no-repeat center center/cover";
+                document.querySelector('.gif-background').style.backgroundSize = "cover";
+                document.querySelector('.gif-background').style.backgroundAttachment = "fixed";
+                
+                // After animation completes
+                setTimeout(function() {
+                    document.querySelector('.gif-background').style.background = "url('frame_19_delay-1s.gif?" + Math.random() + "') no-repeat center center/cover";
                     document.querySelector('.gif-background').style.backgroundSize = "cover";
                     document.querySelector('.gif-background').style.backgroundAttachment = "fixed";
                 }, 2800);
-            };
+            }
         }
     </script>
 </body>

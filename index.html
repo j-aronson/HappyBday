@@ -9,9 +9,6 @@
             margin: 0;
             padding: 0;
             font-family: 'Georgia', serif;
-            background: url('frame_00_delay-1s.gif') no-repeat center center/cover;
-            background-size: cover;
-            background-attachment: fixed;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -20,6 +17,19 @@
             color: #f5f5dc;
             text-align: center;
             padding-top: 5vh;
+            overflow: hidden; /* Prevent scrollbars from appearing */
+        }
+        .gif-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('frame_00_delay-1s.gif') no-repeat center center/cover;
+            background-size: cover;
+            background-attachment: fixed;
+            z-index: -1; /* Put the GIF behind the text */
+            transition: background-position 0.3s ease;
         }
         .container {
             background: none;
@@ -65,6 +75,9 @@
 
         /* Media query for mobile devices */
         @media (max-width: 768px) {
+            .gif-background {
+                background-position: center 80%; /* Move the background lower on mobile devices */
+            }
             h1 {
                 font-size: 2em; /* Make the title smaller on smaller screens */
             }
@@ -80,6 +93,7 @@
     </style>
 </head>
 <body>
+    <div class="gif-background"></div> <!-- The container for the GIF -->
     <h1>🥃 Happy Birthday Dad! 🥃</h1>
     <div class="container">
         <p>Hope you have an absolutely amazing day! Thank you for always being such an incredible dad and someone I can always count on for help whenever I need it. You do so much for us, and I can't thank you enough for everything. Love you tonnes, Da — here's a drink on me!</p>
@@ -88,22 +102,25 @@
 
     <script>
         function startGif() {
-            // Preload the next GIF to avoid the flash
+            // Preload the next GIF
             const nextGif = new Image();
             nextGif.src = 'frame_19_delay-1s.gif?' + Math.random();
 
-            // Change to the full GIF immediately
-            document.body.style.background = "url('whiskeyPour.gif?" + Math.random() + "') no-repeat center center/cover";
-            document.body.style.backgroundSize = "cover";
-            document.body.style.backgroundAttachment = "fixed";
+            // Get the current background position style
+            const bgPosition = window.innerWidth <= 768 ? 'center 80%' : 'center center';
 
-            // After 3 seconds, change to the second GIF frame once it's loaded
+            // Apply first GIF with the appropriate positioning
+            document.querySelector('.gif-background').style.background = "url('whiskeyPour.gif?" + Math.random() + "') no-repeat " + bgPosition + "/cover";
+            document.querySelector('.gif-background').style.backgroundSize = "cover";
+            document.querySelector('.gif-background').style.backgroundAttachment = "fixed";
+
+            // Apply second GIF with the same positioning
             nextGif.onload = function() {
                 setTimeout(function() {
-                    document.body.style.background = "url('frame_19_delay-1s.gif?" + Math.random() + "') no-repeat center center/cover";
-                    document.body.style.backgroundSize = "cover";
-                    document.body.style.backgroundAttachment = "fixed";
-                }, 2800); // 3000 milliseconds = 3 seconds
+                    document.querySelector('.gif-background').style.background = "url('frame_19_delay-1s.gif?" + Math.random() + "') no-repeat " + bgPosition + "/cover";
+                    document.querySelector('.gif-background').style.backgroundSize = "cover";
+                    document.querySelector('.gif-background').style.backgroundAttachment = "fixed";
+                }, 2800);
             };
         }
     </script>
